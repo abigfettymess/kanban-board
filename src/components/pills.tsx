@@ -19,7 +19,12 @@ const Pill = ({ color, label }: PillProps) => (
       line-height: 120%;
     `}
   >
-    <p css={css``}>{label}</p>    
+    <p 
+      css={css`
+        font-size: 14px;
+        color: rgba(55, 53, 47, 0.4);
+        
+      `}>{label}</p>    
   </div>
 );
 
