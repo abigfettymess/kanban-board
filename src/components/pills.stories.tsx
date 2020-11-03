@@ -13,5 +13,5 @@ export const DoingPill = Template.bind({});
 
 DoingPill.args = {
   color: 'rgba(255, 0, 26, 0.2)',
-  label: 'doing',
+  label: (<p>Doing</p>),
 };

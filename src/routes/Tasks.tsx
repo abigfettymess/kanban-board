@@ -1,4 +1,5 @@
 import React from 'react';
+import KanbanBoard from '../components/KanbanBoard';
 
 type Props = {
 
@@ -7,7 +8,7 @@ type Props = {
 const Tasks = () => {
   return (
     <div>
-      Tasks
+      <KanbanBoard tasks={[]} />
     </div>
   );
 };

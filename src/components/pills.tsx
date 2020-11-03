@@ -1,14 +1,14 @@
 import React from 'react';
-import styled from '@emotion/styled';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 export type PillProps = { 
   color: string;
-  label: string;
+  onClick?: () => void
+  label: React.ReactNode;
 }
 
-const Pill = ({ color, label }: PillProps) => (
+const Pill = ({ color, label, onClick }: PillProps) => (
   <div
     css={css`
       background-color: ${color};
@@ -16,15 +16,17 @@ const Pill = ({ color, label }: PillProps) => (
       align-items: center;
       flex-shrink: 1;
       border-radius: 3px;
-      line-height: 120%;
+      cursor: pointer;
     `}
+    onClick={() => {
+      if (onClick) {
+        onClick();
+      }
+    }}
   >
-    <p 
-      css={css`
-        font-size: 14px;
-        color: rgba(55, 53, 47, 0.4);
-        
-      `}>{label}</p>    
+    <div>
+      {label}
+    </div>
   </div>
 );
 
