@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Task from '../models/task';
 import FlexLayout from "../styles/FlexLayout";
+import Dragible from "./Dragible";
 
 const Layout = styled.div`
   width: 100%;
@@ -30,9 +31,11 @@ export type Props = {
 
 const TaskCard = ({ task }: Props) => {
   return (
-    <Layout id={task.id}>
-      <P>{task.name}</P>
-    </Layout>
+  	<Dragible draggable={true}>
+		  <Layout id={task.id}>
+			  <P>{task.name}</P>
+		  </Layout>
+	  </Dragible>
   );
 }
 

@@ -67,7 +67,15 @@ const DragAndDrop = styled.div`
 
 `;
 
-const TaskList = ({ type, tasks }: Props) => { 
+const TaskList = ({ type, tasks }: Props) => {
+	
+	const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+		console.log(e);
+	}
+	
+	const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+		console.assert(e);
+	};
   return (
     <ListLayout>
 	    <PillLayout>
@@ -75,12 +83,17 @@ const TaskList = ({ type, tasks }: Props) => {
 			    <>{GetLabel(type)}</>
 		    </Pill>
 	    </PillLayout>
-   
-      <CardsLayout>
-        {tasks.map((task: Task, index: number) => (
-          <TaskCard key={index} task={task} />
-        ))}
-      </CardsLayout>
+      <DragAndDrop
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+      >
+	      <CardsLayout>
+		      {tasks.map((task: Task, index: number) => (
+			      <TaskCard key={index} task={task} />
+		      ))}
+	      </CardsLayout>
+      </DragAndDrop>
+ 
     </ListLayout>
   );
 }

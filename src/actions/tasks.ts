@@ -16,4 +16,19 @@ type OnUpdateTask = {
   payload: Task;
 }
 
+export const addTask = (payload: Task) => ({
+	type: types.ADD_TASK,
+	payload,
+});
+
+export const deleteTask = (payload: Task) => ({
+	type: types.DELETE_TASK,
+	payload,
+});
+
+export const updateTask = (payload: Task) => ({
+	type: types.UPDATE_TASK,
+	payload,
+});
+
 export type TasksActionType = OnAddTask | OnDeleteTask | OnUpdateTask;
