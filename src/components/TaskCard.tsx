@@ -1,13 +1,17 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Task from '../models/task';
+import FlexLayout from "../styles/FlexLayout";
 
-const DIV = styled.div`
-  min-height: 100px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+const Layout = styled.div`
   width: 100%;
   min-width: 200px;
   cursor: pointer;
+  padding: 1px 4px;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;
+  &:hover {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  }
 `;
 
 const P = styled.p`
@@ -17,7 +21,7 @@ const P = styled.p`
   font-size: 14px;
   font-weight: 500;
   pointer-events: none;
-  font-family: sans-serif;
+  text-align: start;
 `;
 
 export type Props = {
@@ -26,9 +30,9 @@ export type Props = {
 
 const TaskCard = ({ task }: Props) => {
   return (
-    <DIV id={task.id}>
+    <Layout id={task.id}>
       <P>{task.name}</P>
-    </DIV>
+    </Layout>
   );
 }
 

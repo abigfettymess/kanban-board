@@ -41,29 +41,47 @@ const GetColor = (type: TaskType) => {
   return S;
 };
 
-const DIV = styled.div`
+const ListLayout = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
   border: 1px solid black;
 `;
 
+const PillLayout = styled.div`
+	padding: 10px;
+`;
+
 const P = styled.p`
+
+`;
+
+const CardsLayout = styled.div`
+	/* Each child should be 10px */
+	& * {
+		margin-top: 10px;
+	}
+`;
+
+const DragAndDrop = styled.div`
 
 `;
 
 const TaskList = ({ type, tasks }: Props) => { 
   return (
-    <DIV>
-      <Pill color={GetColor(type)} >
-        <>{GetLabel(type)}</>
-      </Pill>
-      <div>
+    <ListLayout>
+	    <PillLayout>
+		    <Pill color={GetColor(type)} >
+			    <>{GetLabel(type)}</>
+		    </Pill>
+	    </PillLayout>
+   
+      <CardsLayout>
         {tasks.map((task: Task, index: number) => (
           <TaskCard key={index} task={task} />
         ))}
-      </div>
-    </DIV>
+      </CardsLayout>
+    </ListLayout>
   );
 }
 
