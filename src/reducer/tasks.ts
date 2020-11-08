@@ -1,13 +1,18 @@
 import Task from '../models/task';
 import * as types from '../constants/types';
 import { RootAction } from '../actions';
+import {TASK1} from "../mock";
 
 export type Tasks = Task[];
 export type TasksState = {
   readonly tasks: Tasks;
 }
 
-export default (state: TasksState, action: RootAction) => {
+const initialState: TasksState = {
+	tasks: [TASK1],
+};
+
+export default (state: TasksState = initialState, action: RootAction) => {
   switch (action.type) {
 	  case types.ADD_TASK:
 	  	return {

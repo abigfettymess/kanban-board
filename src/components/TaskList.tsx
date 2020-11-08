@@ -4,10 +4,20 @@ import Task, { TaskType } from '../models/task';
 import { Tasks } from '../reducer/tasks';
 import TaskCard from './TaskCard';
 import Pill from "./pills";
+import Dragible from "./Dragible";
+import {useDispatch, useSelector} from "react-redux";
+import {RootAction} from "../actions";
+import {RootState} from "../store";
+import {updateTask} from "../actions/tasks";
+import FlexLayout from '../styles/FlexLayout';
+import AddButton from "../AddButton";
 
 export type Props = {
   type: TaskType;
   tasks: Tasks;
+  onDrop: (e: React.DragEvent<HTMLDivElement>, id: string) => void;
+	onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
+	onDragStart: (e: React.DragEvent<HTMLDivElement>, id: string) => void;
 };
 
 const GetLabel = (type: TaskType) => {
@@ -68,32 +78,54 @@ const DragAndDrop = styled.div`
 `;
 
 const TaskList = ({ type, tasks }: Props) => {
+	const dispatch = useDispatch();
+	const selector = useSelector((state: RootState) => state.tasks);
 	
-	const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
-		console.log(e);
-	}
+	const onDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
+		console.log('onDragStart');
+		e.dataTransfer.setData('id', id);
+	};
 	
 	const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-		console.assert(e);
+		e.preventDefault();
 	};
+	
+	const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+		console.log('onDrop');
+		const id = e.dataTransfer.getData("id");
+		console.log('id: ', id);
+		
+		const found = selector.tasks.find(t => t.id === id);
+		if (!found) { return; }
+		
+		console.log(found);
+		
+		const C: Task = {
+			...found,
+			type
+		};
+		dispatch(updateTask(C));
+	};
+	
   return (
-    <ListLayout>
-	    <PillLayout>
-		    <Pill color={GetColor(type)} >
-			    <>{GetLabel(type)}</>
-		    </Pill>
-	    </PillLayout>
-      <DragAndDrop
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-      >
-	      <CardsLayout>
-		      {tasks.map((task: Task, index: number) => (
+    <ListLayout className="droppable" onDrop={onDrop} onDragOver={onDragOver}>
+	    <FlexLayout>
+		    <PillLayout>
+			    <Pill color={GetColor(type)} >
+				    <>{GetLabel(type)}</>
+			    </Pill>
+		    </PillLayout>
+		    <AddButton />
+	    </FlexLayout>
+
+
+      <CardsLayout >
+	      {tasks.map((task: Task, index: number) => (
+		      <div draggable={true} onDragStart={(e: React.DragEvent<HTMLDivElement>) => onDragStart(e, task.id)}>
 			      <TaskCard key={index} task={task} />
-		      ))}
-	      </CardsLayout>
-      </DragAndDrop>
- 
+		      </div>
+	      ))}
+      </CardsLayout>
     </ListLayout>
   );
 }

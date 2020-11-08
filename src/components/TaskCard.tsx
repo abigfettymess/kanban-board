@@ -31,11 +31,9 @@ export type Props = {
 
 const TaskCard = ({ task }: Props) => {
   return (
-  	<Dragible draggable={true}>
-		  <Layout id={task.id}>
-			  <P>{task.name}</P>
-		  </Layout>
-	  </Dragible>
+	  <Layout id={task.id}>
+		  <P>{task.name}</P>
+	  </Layout>
   );
 }
 

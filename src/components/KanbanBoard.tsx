@@ -4,6 +4,8 @@ import Task, {TaskType} from '../models/task';
 import FlexLayout from "../styles/FlexLayout";
 import TaskList from "./TaskList";
 import {TASK1} from "../mock";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../store";
 
 type Props = {
   tasks: Task[];
@@ -26,20 +28,44 @@ const BaseLayout = styled(FlexLayout)`
 	width: 100%;
 `
 const KanbanBoard = ({ }: Props) => {
-	const [list, setList] = useState<Task[]>([TASK1]);
 	const onDrop = (e: React.DragEvent<HTMLDivElement>, id: string) => {
 	
 	};
-	const DragOver = (e: React.DragEvent<HTMLDivElement>) => {
+	const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault();
-	}
+	};
+	
+	const onDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
+		e.dataTransfer.setData("id", id);
+	};
+	
+	const dispatch = useDispatch();
+	const selector = useSelector((state: RootState) => state.tasks);
+	const list = selector.tasks;
   return (
     <BaseLayout>
       <Title>Task List</Title>
       <GridLayout>
-        <TaskList type={TaskType.TO_DO} tasks={list.filter(t => t.type === TaskType.TO_DO)} />
-        <TaskList type={TaskType.DOING} tasks={list.filter(t => t.type === TaskType.DOING)} />
-        <TaskList type={TaskType.DONE} tasks={list.filter(t => t.type === TaskType.DONE)} />
+        <TaskList
+	        onDrop={onDrop}
+	        onDragOver={onDragOver}
+	        onDragStart={onDragStart}
+	        type={TaskType.TO_DO}
+	        tasks={list.filter(t => t.type === TaskType.TO_DO)}
+        />
+        <TaskList
+	        onDrop={onDrop}
+	        onDragOver={onDragOver}
+	        onDragStart={onDragStart}
+	        type={TaskType.DOING} tasks={list.filter(t => t.type === TaskType.DOING)}
+        />
+        <TaskList
+	        onDrop={onDrop}
+	        onDragOver={onDragOver}
+	        onDragStart={onDragStart}
+	        type={TaskType.DONE}
+	        tasks={list.filter(t => t.type === TaskType.DONE)}
+        />
       </GridLayout>
     </BaseLayout>
   );
