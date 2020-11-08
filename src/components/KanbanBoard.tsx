@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from '@emotion/styled';
 import Task, {TaskType} from '../models/task';
 import FlexLayout from "../styles/FlexLayout";
 import TaskList from "./TaskList";
-import {TASK1} from "../mock";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store";
+import {onGet} from "../api";
+import {addAllTask} from "../actions/tasks";
 
 type Props = {
   tasks: Task[];
@@ -28,6 +29,14 @@ const BaseLayout = styled(FlexLayout)`
 	width: 100%;
 `
 const KanbanBoard = ({ }: Props) => {
+	useEffect(() => {
+		onGet<Task[]>('api/v1/tasks')
+			.then((res) => {
+				dispatch(addAllTask(res.data));
+			});
+		
+	}, []);
+	
 	const onDrop = (e: React.DragEvent<HTMLDivElement>, id: string) => {
 	
 	};
@@ -51,20 +60,20 @@ const KanbanBoard = ({ }: Props) => {
 	        onDragOver={onDragOver}
 	        onDragStart={onDragStart}
 	        type={TaskType.TO_DO}
-	        tasks={list.filter(t => t.type === TaskType.TO_DO)}
+	        tasks={list.filter(t => t.task_type === TaskType.TO_DO)}
         />
         <TaskList
 	        onDrop={onDrop}
 	        onDragOver={onDragOver}
 	        onDragStart={onDragStart}
-	        type={TaskType.DOING} tasks={list.filter(t => t.type === TaskType.DOING)}
+	        type={TaskType.DOING} tasks={list.filter(t => t.task_type === TaskType.DOING)}
         />
         <TaskList
 	        onDrop={onDrop}
 	        onDragOver={onDragOver}
 	        onDragStart={onDragStart}
 	        type={TaskType.DONE}
-	        tasks={list.filter(t => t.type === TaskType.DONE)}
+	        tasks={list.filter(t => t.task_type === TaskType.DONE)}
         />
       </GridLayout>
     </BaseLayout>

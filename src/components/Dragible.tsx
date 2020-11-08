@@ -11,8 +11,6 @@ const Layout = styled.div``;
 const Dragible = ({ children, draggable = true }: Props) => {
 	
 	const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-		console.log("drag");
-		console.log(e);
 	}
 	return (
 		<Layout

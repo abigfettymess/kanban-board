@@ -8,9 +8,10 @@ import Dragible from "./Dragible";
 import {useDispatch, useSelector} from "react-redux";
 import {RootAction} from "../actions";
 import {RootState} from "../store";
-import {updateTask} from "../actions/tasks";
+import {addTask, updateTask} from "../actions/tasks";
 import FlexLayout from '../styles/FlexLayout';
 import AddButton from "../AddButton";
+import {onGet, onPost, onPut} from "../api";
 
 export type Props = {
   type: TaskType;
@@ -91,20 +92,33 @@ const TaskList = ({ type, tasks }: Props) => {
 	};
 	
 	const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
-		console.log('onDrop');
 		const id = e.dataTransfer.getData("id");
-		console.log('id: ', id);
-		
-		const found = selector.tasks.find(t => t.id === id);
+
+		const found = selector.tasks.find(t => t.id == (id));
 		if (!found) { return; }
-		
-		console.log(found);
 		
 		const C: Task = {
 			...found,
-			type
+			task_type: type
 		};
-		dispatch(updateTask(C));
+		onPut<Task>(`api/v1/tasks/${found.id}`, C)
+			.then((res) => {
+				dispatch(updateTask(res.data));
+			});
+		
+	};
+	
+	const onAdd = () => {
+		const t: Task = {
+			task_type: type,
+			id: 'place_holder',
+			description: 'test',
+			name: 'test',
+		};
+		
+		onPost<Task>('api/v1/tasks', t).then((res) => {
+			dispatch(addTask(res.data));
+		})
 	};
 	
   return (
@@ -115,7 +129,7 @@ const TaskList = ({ type, tasks }: Props) => {
 				    <>{GetLabel(type)}</>
 			    </Pill>
 		    </PillLayout>
-		    <AddButton />
+		    <AddButton onClick={onAdd} />
 	    </FlexLayout>
 
 

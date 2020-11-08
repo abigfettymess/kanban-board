@@ -1,7 +1,6 @@
 import Task from '../models/task';
 import * as types from '../constants/types';
 import { RootAction } from '../actions';
-import {TASK1} from "../mock";
 
 export type Tasks = Task[];
 export type TasksState = {
@@ -9,11 +8,16 @@ export type TasksState = {
 }
 
 const initialState: TasksState = {
-	tasks: [TASK1],
+	tasks: [],
 };
 
 export default (state: TasksState = initialState, action: RootAction) => {
   switch (action.type) {
+	  case types.ADD_ALL_TASKS:
+	  	return {
+	  		...state,
+			  tasks: [...state.tasks, ...action.payload]
+		  }
 	  case types.ADD_TASK:
 	  	return {
 	  		...state,

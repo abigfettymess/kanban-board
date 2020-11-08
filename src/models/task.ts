@@ -1,15 +1,18 @@
 interface Task {
   id: string;
   name: string;
-  type: TaskType;
+  task_type: TaskType;
+  description: string;
+  created_at?: string;
+  update_at?: string;
 }
 
 /* Task types */
 export enum TaskType {
-  DOING = 'DOING',
-  TO_DO = 'TO_DO',
-  DONE = 'DONE',
-  HIDDEN = 'HIDDEN',
+  DOING = 'doing',
+  TO_DO = 'to-do',
+  DONE = 'done',
+  HIDDEN = 'hidden',
 }
 
 export default Task;
