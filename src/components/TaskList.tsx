@@ -8,7 +8,7 @@ import Dragible from "./Dragible";
 import {useDispatch, useSelector} from "react-redux";
 import {RootAction} from "../actions";
 import {RootState} from "../store";
-import {addTask, updateTask} from "../actions/tasks";
+import {addTask, setDragging, updateTask} from "../actions/tasks";
 import FlexLayout from '../styles/FlexLayout';
 import AddButton from "../AddButton";
 import {onGet, onPost, onPut} from "../api";
@@ -56,7 +56,6 @@ const ListLayout = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  border: 1px solid black;
 `;
 
 const PillLayout = styled.div`
@@ -81,10 +80,12 @@ const DragAndDrop = styled.div`
 const TaskList = ({ type, tasks }: Props) => {
 	const dispatch = useDispatch();
 	const selector = useSelector((state: RootState) => state.tasks);
+	console.log(selector.dragging);
 	
 	const onDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
 		console.log('onDragStart');
 		e.dataTransfer.setData('id', id);
+		dispatch(setDragging(true));
 	};
 	
 	const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -103,6 +104,7 @@ const TaskList = ({ type, tasks }: Props) => {
 		};
 		onPut<Task>(`api/v1/tasks/${found.id}`, C)
 			.then((res) => {
+				dispatch(setDragging(false));
 				dispatch(updateTask(res.data));
 			});
 		
@@ -122,7 +124,11 @@ const TaskList = ({ type, tasks }: Props) => {
 	};
 	
   return (
-    <ListLayout className="droppable" onDrop={onDrop} onDragOver={onDragOver}>
+    <ListLayout
+	    className="droppable"
+	    style={{ border: selector.dragging ? '1px solid red': '' }}
+	    onDrop={onDrop}
+	    onDragOver={onDragOver}>
 	    <FlexLayout>
 		    <PillLayout>
 			    <Pill color={GetColor(type)} >

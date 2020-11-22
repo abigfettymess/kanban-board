@@ -5,14 +5,21 @@ import { RootAction } from '../actions';
 export type Tasks = Task[];
 export type TasksState = {
   readonly tasks: Tasks;
+  readonly dragging: boolean;
 }
 
 const initialState: TasksState = {
 	tasks: [],
+	dragging: false,
 };
 
 export default (state: TasksState = initialState, action: RootAction) => {
   switch (action.type) {
+	  case types.SET_DRAGGING:
+	  	return {
+	  		...state,
+			  dragging: action.payload,
+		  };
 	  case types.ADD_ALL_TASKS:
 	  	return {
 	  		...state,

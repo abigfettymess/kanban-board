@@ -15,8 +15,8 @@ type Props = {
 /* Grid layout */
 const GridLayout = styled.div`
   display: grid;
-  grid-template-columns: 25rem 25rem 25rem;
-  grid-column-gap: 1rem;
+  grid-template-columns: 25em 25em 25em;
+  grid-column-gap: 1em;
   padding: 3rem;
 `;
 

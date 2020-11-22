@@ -1,6 +1,11 @@
 import * as types from '../constants/types';
 import Task from '../models/task';
 
+type OnSetDragging = {
+	type: typeof types.SET_DRAGGING,
+	payload: boolean;
+};
+
 type OnAddAllTask = {
 	type: typeof types.ADD_ALL_TASKS;
 	payload: Task[];
@@ -39,6 +44,11 @@ export const updateTask = (payload: Task) => ({
 export const addAllTask = (payload: Task[]) => ({
 	type: types.ADD_ALL_TASKS,
 	payload,
-})
+});
 
-export type TasksActionType = OnAddAllTask | OnAddTask | OnDeleteTask | OnUpdateTask;
+export const setDragging = (payload: boolean) => ({
+	type: types.SET_DRAGGING,
+	payload,
+});
+
+export type TasksActionType = OnSetDragging | OnAddAllTask | OnAddTask | OnDeleteTask | OnUpdateTask;
